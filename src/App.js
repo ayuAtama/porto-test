@@ -6,8 +6,13 @@ import ContactMeSection from "./components/ContactMeSection";
 import Footer from "./components/Footer";
 import { AlertProvider } from "./context/alertContext";
 import Alert from "./components/Alert";
+import { notifyConsole } from "./components/watermark";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    notifyConsole();
+  }, []);
   return (
     <ChakraProvider>
       <AlertProvider>

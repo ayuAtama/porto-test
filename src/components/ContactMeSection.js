@@ -20,18 +20,20 @@ import { useAlertContext } from "../context/alertContext";
 const LandingSection = () => {
   const { isLoading, response, submit } = useSubmit();
   const { onOpen } = useAlertContext();
+  useEffect(() => {
+    if (response?.type === "success") {
+      onOpen("success", response.message);
+      formik.resetForm();
+    } else if (response?.type === "error") {
+      onOpen("error", response.message);
+    }
+  }, [response]);
 
   const formik = useFormik({
     initialValues: { firstName: "", email: "", type: "hireMe", comment: "" },
-    onSubmit: async (values, { resetForm }) => {
-      await submit("", values); // pass dummy url + values
 
-      if (response?.type === "success") {
-        onOpen("success", `Thanks ${values.firstName}, message sent!`);
-        resetForm();
-      } else if (response?.type === "error") {
-        onOpen("error", response.message);
-      }
+    onSubmit: async (values) => {
+      await submit("", values); // just trigger it
     },
 
     validationSchema: Yup.object({
